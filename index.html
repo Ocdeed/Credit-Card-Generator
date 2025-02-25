@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Credit Card Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header class="app-header">
+        <div class="header-content">
+          <div class="logo-wrapper">
+            <div class="logo-container">
+              <i class="fas fa-credit-card card-icon"></i>
+              <h1>Credit Card Generator</h1>
+            </div>
+            <div class="header-pills">
+              <span class="pill">Visa</span>
+              <span class="pill">Mastercard</span>
+              <span class="pill">Amex</span>
+            </div>
+          </div>
+          <div class="header-controls">
+            <button id="themeToggle" aria-label="Toggle theme">
+              <i class="fas fa-moon"></i>
+            </button>
+          </div>
+        </div>
+        <div class="header-decorator"></div>
+        <div class="header-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
+        </div>
+      </header>
+
+      <section class="settings-wrapper">
+        <div class="settings-container">
+          <div class="settings-header">
+            <i class="fas fa-sliders-h"></i>
+            <h2>Generator Options</h2>
+          </div>
+          <div class="settings-grid">
+            <div class="setting-item">
+              <label for="cardType">
+                <i class="fas fa-credit-card"></i>
+                Card Type
+              </label>
+              <select id="cardType">
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="amex">American Express</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label for="quantity">
+                <i class="fas fa-layer-group"></i>
+                Quantity
+              </label>
+              <div class="quantity-control">
+                <button class="quantity-btn minus">-</button>
+                <input type="number" id="quantity" min="1" max="10" value="1" />
+                <button class="quantity-btn plus">+</button>
+              </div>
+            </div>
+            <div class="setting-item">
+              <label class="toggle-label">
+                <i class="fas fa-format"></i>
+                Format Numbers
+              </label>
+              <label class="switch">
+                <input type="checkbox" id="formatted" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          <button id="generate" class="generate-btn">
+            <i class="fas fa-wand-sparkles"></i>
+            Generate Cards
+          </button>
+        </div>
+      </section>
+
+      <section class="output-wrapper">
+        <div class="output-header">
+          <h2><i class="fas fa-credit-card"></i> Generated Cards</h2>
+          <div class="output-controls">
+            <button id="downloadAll" class="control-btn">
+              <i class="fas fa-download"></i>
+              Download All
+            </button>
+          </div>
+        </div>
+        <div class="cards-grid" id="cards">
+          <!-- Cards will be inserted here -->
+        </div>
+      </section>
+
+      <section class="info-wrapper">
+        <div class="info-container">
+          <button id="infoToggle" class="info-toggle">
+            <div class="toggle-content">
+              <i class="fas fa-lightbulb"></i>
+              <span>Learn About the Algorithm</span>
+            </div>
+            <i class="fas fa-chevron-down toggle-arrow"></i>
+          </button>
+          <div id="infoContent" class="info-content hidden">
+            <div class="info-grid">
+              <div class="info-card">
+                <div class="info-icon">
+                  <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Luhn Algorithm</h3>
+                <p>
+                  A checksum formula used to validate identification numbers,
+                  including credit card numbers.
+                </p>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Error Detection</h3>
+                <p>
+                  Detects accidental errors such as single digit mistakes or
+                  transposition of adjacent digits.
+                </p>
+              </div>
+            </div>
+            <div class="disclaimer-card">
+              <div class="disclaimer-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="disclaimer-content">
+                <h3>Important Notice</h3>
+                <p>
+                  This tool is for testing and educational purposes only. Do not
+                  use generated numbers for real transactions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="app-footer">
+        <div class="footer-content">
+          <div class="footer-info">
+            <p>&copy; <span id="currentYear"></span> Credit Card Generator</p>
+            <span class="footer-divider">|</span>
+            <p>Created with <i class="fas fa-code"></i> by Ocdeed Codes</p>
+          </div>
+          <a
+            href="https://github.com/Ocdeed"
+            class="footer-link"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="fab fa-github"></i>
+            View on GitHub
+          </a>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
