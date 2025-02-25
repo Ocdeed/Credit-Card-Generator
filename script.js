@@ -54,6 +54,24 @@ class CreditCardGenerator {
     }
     return number.replace(/(\d{4})/g, "$1 ").trim();
   }
+
+  static generateExpiryDate() {
+    const today = new Date();
+    const month = Math.floor(Math.random() * 12) + 1;
+    const year = today.getFullYear() + Math.floor(Math.random() * 5) + 1;
+    return {
+      month: month.toString().padStart(2, "0"),
+      year: year.toString().slice(-2),
+    };
+  }
+
+  static generateCVV(type) {
+    const length = type === "amex" ? 4 : 3;
+    return Array(length)
+      .fill(0)
+      .map(() => Math.floor(Math.random() * 10))
+      .join("");
+  }
 }
 
 class UI {
@@ -101,20 +119,51 @@ class UI {
   }
 
   static createCardElement(number, type) {
+    const expiry = CreditCardGenerator.generateExpiryDate();
+    const cvv = CreditCardGenerator.generateCVV(type);
     const card = document.createElement("div");
     card.className = "card";
+
+    const cardTypeIcon =
+      type.toLowerCase() === "amex"
+        ? "cc-amex"
+        : type.toLowerCase() === "mastercard"
+        ? "cc-mastercard"
+        : "cc-visa";
+
     card.innerHTML = `
             <div class="card-content">
+                <div class="card-chip-wrapper">
+                    <div class="card-chip">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="card-brand">
+                        <i class="fab fa-${cardTypeIcon}"></i>
+                    </div>
+                </div>
                 <div class="card-number">${number}</div>
-                <div class="card-type">
-                    <i class="fas fa-${type.toLowerCase()}"></i>
-                    ${type.toUpperCase()}
+                <div class="card-details">
+                    <div class="card-expiry">
+                        <div class="detail-label">
+                            <i class="far fa-calendar-alt"></i>
+                            Expires
+                        </div>
+                        <div class="detail-value">${expiry.month}/${expiry.year}</div>
+                    </div>
+                    <div class="card-cvv">
+                        <div class="detail-label">
+                            <i class="fas fa-lock"></i>
+                            CVV
+                        </div>
+                        <div class="detail-value">${cvv}</div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <span class="validation-badge">
-                        <i class="fas fa-check-circle"></i> Valid
+                        <i class="fas fa-check-circle"></i>
+                        Valid
                     </span>
-                    <button class="copy-btn" aria-label="Copy number">
+                    <button class="copy-btn" aria-label="Copy card details">
                         <i class="fas fa-copy"></i>
                         Copy
                     </button>
@@ -123,7 +172,14 @@ class UI {
         `;
 
     card.querySelector(".copy-btn").addEventListener("click", () => {
-      navigator.clipboard.writeText(number.replace(/\s/g, ""));
+      const cardData = {
+        number: number.replace(/\s/g, ""),
+        expiry: `${expiry.month}/${expiry.year}`,
+        cvv: cvv,
+      };
+      navigator.clipboard.writeText(
+        `Card: ${cardData.number}\nExpiry: ${cardData.expiry}\nCVV: ${cardData.cvv}`
+      );
       this.showCopyFeedback(card);
     });
 
