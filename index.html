@@ -105,6 +105,36 @@
         </div>
       </section>
 
+      <section class="validation-wrapper">
+        <div class="validation-container">
+          <div class="validation-header">
+            <i class="fas fa-check-circle"></i>
+            <h2>Validate Card Number</h2>
+          </div>
+          <div class="validation-content">
+            <div class="validation-input-group">
+              <input
+                type="text"
+                id="validateNumber"
+                placeholder="Enter card number to validate"
+                maxlength="19"
+                autocomplete="off"
+              />
+              <button id="validateBtn" class="validate-btn">
+                <i class="fas fa-magnifying-glass"></i>
+                Validate
+              </button>
+            </div>
+            <div id="validationResult" class="validation-result hidden">
+              <div class="result-icon">
+                <i class="fas"></i>
+              </div>
+              <div class="result-message"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="info-wrapper">
         <div class="info-container">
           <button id="infoToggle" class="info-toggle">

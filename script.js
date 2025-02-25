@@ -72,6 +72,52 @@ class CreditCardGenerator {
       .map(() => Math.floor(Math.random() * 10))
       .join("");
   }
+
+  static validateNumber(number) {
+    // Remove spaces and non-digit characters
+    number = number.replace(/\D/g, "");
+
+    if (number.length < 13 || number.length > 19) {
+      return {
+        isValid: false,
+        message: "Card number must be between 13 and 19 digits",
+      };
+    }
+
+    // Identify card type
+    let cardType = "Unknown";
+    if (/^4/.test(number)) cardType = "Visa";
+    else if (/^5[1-5]/.test(number)) cardType = "Mastercard";
+    else if (/^3[47]/.test(number)) cardType = "American Express";
+
+    // Luhn algorithm check
+    let sum = 0;
+    let isEven = false;
+
+    for (let i = number.length - 1; i >= 0; i--) {
+      let digit = parseInt(number[i]);
+
+      if (isEven) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+
+      sum += digit;
+      isEven = !isEven;
+    }
+
+    const isValid = sum % 10 === 0;
+
+    return {
+      isValid,
+      cardType,
+      message: isValid
+        ? `Valid ${cardType} card number`
+        : `Invalid card number${
+            cardType !== "Unknown" ? ` (${cardType} format)` : ""
+          }`,
+    };
+  }
 }
 
 class UI {
@@ -81,6 +127,7 @@ class UI {
     this.initQuantityControls();
     this.initDownloadButton();
     this.initFooter();
+    this.initValidation();
 
     // Initialize info toggle state
     document
@@ -261,6 +308,37 @@ class UI {
   static initFooter() {
     document.getElementById("currentYear").textContent =
       new Date().getFullYear();
+  }
+
+  static initValidation() {
+    const input = document.getElementById("validateNumber");
+    const button = document.getElementById("validateBtn");
+    const result = document.getElementById("validationResult");
+
+    // Format input as user types
+    input.addEventListener("input", (e) => {
+      let value = e.target.value.replace(/\D/g, "");
+      if (value.length > 16) value = value.substr(0, 16);
+      e.target.value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+    });
+
+    button.addEventListener("click", () => {
+      const number = input.value.replace(/\s/g, "");
+      const validation = CreditCardGenerator.validateNumber(number);
+
+      result.className =
+        "validation-result " + (validation.isValid ? "valid" : "invalid");
+      result.innerHTML = `
+            <div class="result-icon">
+                <i class="fas ${
+                  validation.isValid ? "fa-check" : "fa-xmark"
+                }"></i>
+            </div>
+            <div class="result-message">${validation.message}</div>
+        `;
+
+      result.classList.remove("hidden");
+    });
   }
 }
 
